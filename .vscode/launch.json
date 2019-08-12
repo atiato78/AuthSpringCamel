@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "name": "Launch Java Program (AZDS)",
+            "type": "java-azds",
+            "request": "launch",
+            "preLaunchTask": "azds: prelaunch",
+            "projectName": "SSec",
+            "mainClass": "",
+            "port": 50503,
+            "cwd": "/usr/src/app"
+        }
+    ]
+}

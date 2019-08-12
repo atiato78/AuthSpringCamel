@@ -1,0 +1,36 @@
+kind: helm-release
+apiVersion: 1.1
+build:
+  context: .
+  dockerfile: Dockerfile
+install:
+  chart: charts/authspringcamel
+  values:
+  - values.dev.yaml?
+  - secrets.dev.yaml?
+  set:
+    replicaCount: 1
+    image:
+      repository: authspringcamel
+      tag: $(tag)
+      pullPolicy: Never
+    ingress:
+      annotations:
+        kubernetes.io/ingress.class: traefik-azds
+      hosts:
+      # This expands to form the service's public URL: [space.s.][rootSpace.]authspringcamel.<random suffix>.<region>.azds.io
+      # Customize the public URL by changing the 'authspringcamel' text between the $(rootSpacePrefix) and $(hostSuffix) tokens
+      # For more information see https://aka.ms/devspaces/routing
+      - $(spacePrefix)$(rootSpacePrefix)authspringcamel$(hostSuffix)
+configurations:
+  develop:
+    build:
+      dockerfile: Dockerfile.develop
+      useGitIgnore: true
+    container:
+      sync:
+      - "**/**"
+      iterate:
+        processesToKill: [java]
+        buildCommands:
+        - ["mvn","package","-Dmaven.test.skip=true","-Dcheckstyle.skip=true","-Dmaven.javadoc.skip=true"]
