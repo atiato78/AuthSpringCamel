@@ -11,16 +11,20 @@ public class GenController {
 
 	@GetMapping("/user")
 	@PreAuthorize("hasRole('USER')")
-	public String forUser() {
-
-		return "welcome user";
+	public response forUser() {
+		response test=new response();
+		test.setResult("success");
+		return test;
 	}
 
 	@GetMapping("/admin")
 	@PreAuthorize("hasRole('ADMIN')")
-	public String forAdmin() {
+	public response forAdmin() {
 
-		return "welcome admin";
+		response test=new response();
+		test.setResult("success-admin");
+		return test;
+		
 	}
 	
 	
